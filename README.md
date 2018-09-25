@@ -31,8 +31,13 @@ $server->on('request', new SessionMiddleware(function ($request, $response) {
 $server->start();
 ```
 
-**Note:** Direct output bypassing Swoole response is prohibited.
+## Caveats
+
+Direct output bypassing Swoole response is prohibited.
 Writing to the standard output stream violates the [headers_sent()](http://us3.php.net/headers_sent) requirement of the PHP session functions.
+
+PHP sessions are synchronous and blocking by design as [explained](https://github.com/swoole/swoole-src/issues/1828#issuecomment-407611525) by the Swoole team.
+Asynchronous libraries, such as [itxiao6/session](https://github.com/itxiao6/session) or [swoft-cloud/swoft-session](https://github.com/swoft-cloud/swoft-session), built specifically for Swoole are recommended instead.
 
 ## License
 
