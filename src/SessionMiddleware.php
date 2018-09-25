@@ -9,6 +9,11 @@ class SessionMiddleware
     protected $middleware;
 
     /**
+     * @var callable
+     */
+    protected $idGenerator;
+
+    /**
      * @var bool
      */
     protected $useCookies;
@@ -22,12 +27,18 @@ class SessionMiddleware
      * Inject dependencies
      *
      * @param callable $middleware function (\Swoole\Http\Request $request, \Swoole\Http\Response $response)
+     * @param callable $idGenerator
      * @param bool|null $useCookies
      * @param bool|null $useOnlyCookies
      */
-    public function __construct(callable $middleware, $useCookies = null, $useOnlyCookies = null)
-    {
+    public function __construct(
+        callable $middleware,
+        $idGenerator = 'session_create_id',
+        $useCookies = null,
+        $useOnlyCookies = null
+    ) {
         $this->middleware = $middleware;
+        $this->idGenerator = $idGenerator;
         $this->useCookies = is_null($useCookies) ? (bool)ini_get('session.use_cookies') : $useCookies;
         $this->useOnlyCookies = is_null($useOnlyCookies) ? (bool)ini_get('session.use_only_cookies') : $useOnlyCookies;
     }
@@ -46,7 +57,7 @@ class SessionMiddleware
         } else if (!$this->useOnlyCookies && isset($request->get[$sessionName])) {
             $sessionId = $request->get[$sessionName];
         } else {
-            $sessionId = session_create_id();
+            $sessionId = call_user_func($this->idGenerator);
         }
         session_id($sessionId);
         session_start();
