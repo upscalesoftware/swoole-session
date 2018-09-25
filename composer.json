@@ -1,0 +1,21 @@
+{
+    "name": "upscale/swoole-session",
+    "description": "PHP sessions compatibility with Swoole web-server",
+    "version": "1.0.0",
+    "keywords": ["session", "Swoole", "server", "compatibility"],
+    "homepage": "https://github.com/upscalesoftware/swoole-session",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Upscale Software Team",
+            "email": "info@upscalesoftware.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1.0",
+        "ext-swoole": "^4.0.0"
+    },
+    "autoload": {
+        "psr-4": {"Upscale\\Swoole\\Session\\": "src/"}
+    }
+}
