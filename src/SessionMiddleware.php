@@ -52,7 +52,7 @@ class SessionMiddleware
         session_start();
         if ($this->useCookies) {
             $cookie = session_get_cookie_params();
-            $response->rawcookie(
+            $response->cookie(
                 $sessionName,
                 $sessionId,
                 $cookie['lifetime'] ? time() + $cookie['lifetime'] : null,
