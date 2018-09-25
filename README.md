@@ -5,7 +5,9 @@ This library implements compatibility of the native [PHP sessions](http://us3.ph
 
 **Features:**
 - Transparent session start/stop
+- Session ID passed in cookies or query string
 - Automatic session data persistence
+- Compliance with PHP [session configuration](http://us3.php.net/manual/en/session.configuration.php)
 
 ## Installation
 
