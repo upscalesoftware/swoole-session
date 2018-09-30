@@ -77,6 +77,8 @@ class SessionMiddleware
             call_user_func($this->middleware, $request, $response);
         } finally {
             session_write_close();
+            session_id('');
+            unset($_SESSION);
         }
     }
 }
