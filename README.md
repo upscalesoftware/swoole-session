@@ -5,7 +5,7 @@ This library implements compatibility of the native [PHP sessions](http://us3.ph
 
 **Features:**
 - Transparent session start/stop
-- Session ID passed in cookies or query string
+- Session ID in cookies or query string
 - Native or custom session ID generator
 - Automatic session data persistence
 - Compliance with PHP [session configuration](http://us3.php.net/manual/en/session.configuration.php)
@@ -18,7 +18,7 @@ composer require upscale/swoole-session
 ```
 ## Usage
 
-Wrap an existing Swoole request handler into the session middleware:
+Wrap your Swoole request handler into the session middleware:
 ```php
 require 'vendor/autoload.php';
 
@@ -28,7 +28,7 @@ $server = new \Swoole\Http\Server('127.0.0.1', 8080);
 
 $server->on('request', new SessionMiddleware(function ($request, $response) {
     $_SESSION['data'] = $_SESSION['data'] ?? rand();
-    $response->end($_SESSION['data'] . PHP_EOL);
+    $response->end($_SESSION['data']);
 }));
 
 $server->start();
