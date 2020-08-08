@@ -78,6 +78,7 @@ class SessionMiddleware
         } finally {
             session_write_close();
             session_id('');
+            $_SESSION = [];
             unset($_SESSION);
         }
     }
