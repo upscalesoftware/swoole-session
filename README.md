@@ -37,13 +37,58 @@ $server->on('request', new SessionMiddleware(function ($request, $response) {
 $server->start();
 ```
 
-## Caveats
+## Limitations
 
-Direct output bypassing Swoole response is prohibited.
-Writing to the standard output stream violates the [headers_sent()](http://us3.php.net/headers_sent) requirement of the PHP session functions.
+### Coroutines
 
-PHP sessions are synchronous and blocking by design as [explained](https://github.com/swoole/swoole-src/issues/1828#issuecomment-407611525) by the Swoole team.
-Asynchronous libraries, such as [itxiao6/session](https://github.com/itxiao6/session) or [swoft-cloud/swoft-session](https://github.com/swoft-cloud/swoft-session), built specifically for Swoole are recommended instead.
+PHP sessions rely on the superglobal variable `$_SESSION` making them incompatible with the Swoole [coroutines](https://www.swoole.co.uk/coroutine).
+When a request idles for an asynchronous I/O operation, its worker process is reused to handle other request(s).
+Swoole switches the call stack context, but the superglobals stay in memory shared across coroutines/requests.
+Session data loaded for one request leaks to other requests causing all sorts of data integrity issues.
+
+Disable coroutines to safely use the PHP sessions:
+```php
+$server->set([
+    'enable_coroutine' => false,
+]);
+```
+
+### Output 
+
+Direct output bypassing the response instance `\Swoole\Http\Response` is prohibited in the Swoole environment.
+Writing to the standard output stream violates the [headers_sent()](http://us3.php.net/headers_sent) requirement of the PHP session functions:
+> PHP Warning:  session_start(): Cannot start session when headers already sent
+
+Statements that "send headers" and hinder the sessions:
+- `echo/print`
+- `fwrite(STDOUT)`
+- `file_put_contents('php://stdout')`
+- `include 'template.phtml'`
+- `header()`
+- `setcookie/setrawcookie()`
+- etc.
+
+[Output buffering](https://www.php.net/manual/en/book.outcontrol.php) commonly used by template engines avoids this pitfall, for example:
+```php
+ob_start();
+include $templatePhtml;
+$output = ob_get_clean();
+
+$response->end($output);
+```
+
+**Warning!** Coroutines are incompatible with the output buffering due to the bug [#3552](https://github.com/swoole/swoole-src/pull/3552) affecting Swoole <= 4.5.2.
+This is not a problem since coroutines have to be disabled for the data integrity reasons discussed above. 
+
+### Blocking
+
+The default session storage of PHP is file-based subject to the filesystem locking.
+Concurrent requests belonging to the same session ID will be blocked to avoid race conditions of concurrent writes.
+Such requests will execute sequentially blocking their respective worker processes from `session_start()` until `session_write_close()`. 
+
+Asynchronous coroutine-aware libraries built specifically for Swoole:
+- [itxiao6/session](https://github.com/itxiao6/session)
+- [swoft-cloud/swoft-session](https://github.com/swoft-cloud/swoft-session)
 
 ## License
 
