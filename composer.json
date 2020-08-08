@@ -1,7 +1,7 @@
 {
     "name": "upscale/swoole-session",
     "description": "PHP sessions compatibility with Swoole web-server",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "keywords": ["session", "Swoole", "server", "PHP", "compatibility"],
     "homepage": "https://github.com/upscalesoftware/swoole-session",
     "license": "Apache-2.0",
