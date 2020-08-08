@@ -25,7 +25,10 @@ require 'vendor/autoload.php';
 use Upscale\Swoole\Session\SessionMiddleware;
 
 $server = new \Swoole\Http\Server('127.0.0.1', 8080);
-
+$server->set([
+    // Disable coroutines to safely access $_SESSION
+    'enable_coroutine' => false,
+]);
 $server->on('request', new SessionMiddleware(function ($request, $response) {
     $_SESSION['data'] = $_SESSION['data'] ?? rand();
     $response->end($_SESSION['data']);
