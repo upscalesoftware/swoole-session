@@ -82,9 +82,9 @@ This is not a problem since coroutines have to be disabled for the data integrit
 
 ### Blocking
 
-The default session storage of PHP is file-based subject to the filesystem locking.
-Concurrent requests belonging to the same session ID will be blocked to avoid race conditions of concurrent writes.
-Such requests will execute sequentially blocking their respective worker processes from `session_start()` until `session_write_close()`. 
+Concurrent requests are prone to the session write race conditions.
+The default file-based session storage of PHP employs the filesystem locking to avoid the data corruption.
+Requests of the same session ID execute sequentially blocking their respective worker processes from `session_start()` until `session_write_close()`. 
 
 Asynchronous coroutine-aware libraries built specifically for Swoole:
 - [itxiao6/session](https://github.com/itxiao6/session)
