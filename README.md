@@ -56,7 +56,7 @@ $server->set([
 ### Output 
 
 Direct output bypassing the response instance `\Swoole\Http\Response` is prohibited in the Swoole environment.
-Writing to the standard output stream violates the [headers_sent()](http://us3.php.net/headers_sent) requirement of the PHP session functions:
+Writing to the standard output stream violates the [headers_sent](http://us3.php.net/headers_sent) requirement of the PHP session functions:
 > PHP Warning:  session_start(): Cannot start session when headers already sent
 
 Statements that "send headers" and hinder the sessions:
@@ -77,7 +77,7 @@ $output = ob_get_clean();
 $response->end($output);
 ```
 
-**Warning!** Coroutines are incompatible with the output buffering due to the bug [#3552](https://github.com/swoole/swoole-src/pull/3552) affecting Swoole <= 4.5.2.
+**Warning!** Coroutines used to "send headers" despite the output buffering until this has been [fixed](https://github.com/swoole/swoole-src/pull/3571) in Swoole 4.5.3.
 This is not a problem since coroutines have to be disabled for the data integrity reasons discussed above. 
 
 ### Blocking
