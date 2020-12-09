@@ -1,4 +1,8 @@
 <?php
+/**
+ * Copyright © Upscale Software. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
 namespace Upscale\Swoole\Session;
 
 class SessionMiddleware

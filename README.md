@@ -92,4 +92,4 @@ Asynchronous coroutine-aware libraries built specifically for Swoole:
 
 ## License
 
-Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+Licensed under the [Apache License, Version 2.0](https://github.com/upscalesoftware/swoole-session/blob/master/LICENSE.txt).
