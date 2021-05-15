@@ -1,0 +1,58 @@
+name: Tests
+on: [push, pull_request]
+jobs:
+  tests:
+    name: Test ${{ matrix.swoole-version }} against php ${{ matrix.php-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        php-version: ['7.1', '7.2', '7.3']
+        swoole-version:
+          - swoole-4.0.4
+          - swoole-4.1.2
+          - swoole-4.2.13
+          - swoole-4.3.6
+          - swoole-4.4.23
+          - swoole-4.5.11
+          - swoole-4.6.7
+          - swoole
+        exclude:
+          - os: ubuntu-latest
+            php-version: '7.1'
+            swoole-version: swoole-4.6.7
+          - os: ubuntu-latest
+            php-version: '7.1'
+            swoole-version: swoole
+        include:
+          - os: ubuntu-latest
+            php-version: '7.4'
+            swoole-version: swoole-4.4.23
+          - os: ubuntu-latest
+            php-version: '7.4'
+            swoole-version: swoole-4.5.11
+          - os: ubuntu-latest
+            php-version: '7.4'
+            swoole-version: swoole-4.6.7
+          - os: ubuntu-latest
+            php-version: '7.4'
+            swoole-version: swoole
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Setup PHP environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: pecl, composer, phpunit
+          extensions: ${{ matrix.swoole-version }}
+          coverage: none
+        env:
+          fail-fast: true
+      - name: Verify PHP environment
+        run: php --ri swoole
+      - name: Install dependencies
+        run: composer install -n
+      - name: Run test suite
+        run: vendor/bin/phpunit
