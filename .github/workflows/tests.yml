@@ -54,5 +54,7 @@ jobs:
         run: php --ri swoole
       - name: Install dependencies
         run: composer install -n
+      - name: Update permissions
+        run: sudo chown -R $USER:$USER /var/lib/php/sessions
       - name: Run test suite
         run: vendor/bin/phpunit
