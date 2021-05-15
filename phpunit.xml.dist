@@ -1,0 +1,19 @@
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         processIsolation="true"
+>
+    <testsuites>
+        <testsuite name="Functional Tests">
+            <directory suffix="Test.php">tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <ini name="session.name" value="PHPSESSID" />
+        <ini name="session.use_cookies" value="1" />
+        <ini name="session.use_only_cookies" value="0" />
+        <ini name="session.gc_maxlifetime" value="1" />
+        <ini name="session.gc_probability" value="1" />
+        <ini name="session.gc_divisor" value="1" />
+    </php>
+</phpunit>
