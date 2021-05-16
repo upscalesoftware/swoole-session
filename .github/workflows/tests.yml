@@ -1,5 +1,9 @@
 name: Tests
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 2 * * 6'
 jobs:
   test-files:
     name: Test ${{ matrix.swoole-version }} with files against php ${{ matrix.php-version }}
