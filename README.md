@@ -1,4 +1,4 @@
-PHP Sessions for Swoole
+PHP Sessions for Swoole [![Build Status](https://github.com/upscalesoftware/swoole-session/workflows/Tests/badge.svg?branch=master)](https://github.com/upscalesoftware/swoole-session/actions?query=workflow%3ATests+branch%3Amaster)
 =======================
 
 This library implements compatibility of the native [PHP sessions](http://us3.php.net/manual/en/book.session.php) with the [Swoole](https://www.swoole.co.uk/) web-server.
