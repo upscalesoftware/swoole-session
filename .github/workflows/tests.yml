@@ -6,11 +6,12 @@ on:
     - cron: '0 2 * * 6'
 jobs:
   test-files:
-    name: Test ${{ matrix.swoole-version }} with files against php ${{ matrix.php-version }}
-    runs-on: ubuntu-latest
+    name: Test ${{ matrix.swoole-version }} with files against php ${{ matrix.php-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest]
         php-version: ['7.3', '7.4']
         swoole-version:
           - swoole-4.4.26
@@ -39,11 +40,12 @@ jobs:
       - name: Run test suite
         run: vendor/bin/phpunit
   test-redis:
-    name: Test ${{ matrix.swoole-version }} with redis against php ${{ matrix.php-version }}
-    runs-on: ubuntu-latest
+    name: Test ${{ matrix.swoole-version }} with redis against php ${{ matrix.php-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest]
         php-version: ['7.3', '7.4']
         swoole-version:
           - swoole-4.4.26
