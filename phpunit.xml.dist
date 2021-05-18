@@ -12,7 +12,7 @@
         <ini name="session.name" value="PHPSESSID" />
         <ini name="session.use_cookies" value="1" />
         <ini name="session.use_only_cookies" value="0" />
-        <ini name="session.gc_maxlifetime" value="1" />
+        <ini name="session.gc_maxlifetime" value="2" />
         <ini name="session.gc_probability" value="1" />
         <ini name="session.gc_divisor" value="1" />
     </php>
