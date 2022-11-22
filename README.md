@@ -18,18 +18,18 @@ composer require upscale/swoole-session
 ```
 ## Usage
 
-Wrap your Swoole request handler into the session middleware:
+Wrap your request handling middleware into the session decorator:
 ```php
 require 'vendor/autoload.php';
 
-use Upscale\Swoole\Session\SessionMiddleware;
+use Upscale\Swoole\Session\SessionDecorator;
 
 $server = new \Swoole\Http\Server('127.0.0.1', 8080);
 $server->set([
     // Disable coroutines to safely access $_SESSION
     'enable_coroutine' => false,
 ]);
-$server->on('request', new SessionMiddleware(function ($request, $response) {
+$server->on('request', new SessionDecorator(function ($request, $response) {
     $_SESSION['data'] ??= rand();
     $response->end($_SESSION['data']);
 }));

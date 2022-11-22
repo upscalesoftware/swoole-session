@@ -6,7 +6,7 @@ declare(strict_types=1);
  */
 namespace Upscale\Swoole\Session;
 
-class SessionMiddleware
+class SessionDecorator
 {
     /**
      * @var callable

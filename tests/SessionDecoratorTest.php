@@ -6,9 +6,9 @@ declare(strict_types=1);
  */
 namespace Upscale\Swoole\Session\Tests;
 
-use Upscale\Swoole\Session\SessionMiddleware;
+use Upscale\Swoole\Session\SessionDecorator;
 
-class SessionMiddlewareTest extends \Upscale\Swoole\Launchpad\Tests\TestCase
+class SessionDecoratorTest extends \Upscale\Swoole\Launchpad\Tests\TestCase
 {
     protected \Swoole\Http\Server $server;
 
@@ -25,7 +25,7 @@ class SessionMiddlewareTest extends \Upscale\Swoole\Launchpad\Tests\TestCase
             'worker_num' => 3,
             'dispatch_mode' => 1,
         ]);
-        $this->server->on('request', new SessionMiddleware($this));
+        $this->server->on('request', new SessionDecorator($this));
 
         $this->spawn($this->server);
     }
