@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright © Upscale Software. All rights reserved.
  * See LICENSE.txt for license details.
@@ -17,15 +18,9 @@ class SessionMiddleware
      */
     protected $idGenerator;
 
-    /**
-     * @var bool
-     */
-    protected $useCookies;
+    protected bool $useCookies;
 
-    /**
-     * @var bool
-     */
-    protected $useOnlyCookies;
+    protected bool $useOnlyCookies;
 
     /**
      * Inject dependencies
@@ -38,8 +33,8 @@ class SessionMiddleware
     public function __construct(
         callable $middleware,
         $idGenerator = 'session_create_id',
-        $useCookies = null,
-        $useOnlyCookies = null
+        ?bool $useCookies = null,
+        ?bool $useOnlyCookies = null
     ) {
         $this->middleware = $middleware;
         $this->idGenerator = $idGenerator;
@@ -49,9 +44,6 @@ class SessionMiddleware
 
     /**
      * Delegate execution to the underlying middleware wrapping it into the session start/stop calls
-     *
-     * @param \Swoole\Http\Request $request
-     * @param \Swoole\Http\Response $response
      */
     public function __invoke(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
@@ -70,7 +62,7 @@ class SessionMiddleware
             $response->cookie(
                 $sessionName,
                 $sessionId,
-                $cookie['lifetime'] ? time() + $cookie['lifetime'] : null,
+                $cookie['lifetime'] ? time() + $cookie['lifetime'] : 0,
                 $cookie['path'],
                 $cookie['domain'],
                 $cookie['secure'],

@@ -4,6 +4,7 @@ on:
   pull_request:
   schedule:
     - cron: '0 2 * * 6'
+
 jobs:
   test-files:
     name: Test ${{ matrix.swoole-version }} with files against php ${{ matrix.php-version }} on ${{ matrix.os }}
@@ -12,15 +13,28 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php-version: ['7.3', '7.4']
+        php-version: [ '8.0', '8.1' ]
         swoole-version:
           - swoole-4.4.26
           - swoole-4.5.11
           - swoole-4.6.7
+          - swoole-4.7.1
+          - swoole-4.8.12
+          - swoole-5.0.1
           - swoole
+        include:
+          - os: ubuntu-latest
+            php-version: '8.2'
+            swoole-version: swoole-4.8.12
+          - os: ubuntu-latest
+            php-version: '8.2'
+            swoole-version: swoole-5.0.1
+          - os: ubuntu-latest
+            php-version: '8.2'
+            swoole-version: swoole
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup PHP environment
         uses: shivammathur/setup-php@v2
         with:
@@ -39,6 +53,7 @@ jobs:
         run: sudo chown -R $USER:$USER /var/lib/php/sessions
       - name: Run test suite
         run: vendor/bin/phpunit
+
   test-redis:
     name: Test ${{ matrix.swoole-version }} with redis against php ${{ matrix.php-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -46,12 +61,25 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php-version: ['7.3', '7.4']
+        php-version: [ '8.0', '8.1' ]
         swoole-version:
           - swoole-4.4.26
           - swoole-4.5.11
           - swoole-4.6.7
+          - swoole-4.7.1
+          - swoole-4.8.12
+          - swoole-5.0.1
           - swoole
+        include:
+          - os: ubuntu-latest
+            php-version: '8.2'
+            swoole-version: swoole-4.8.12
+          - os: ubuntu-latest
+            php-version: '8.2'
+            swoole-version: swoole-5.0.1
+          - os: ubuntu-latest
+            php-version: '8.2'
+            swoole-version: swoole
     services:
       redis:
         image: redis
@@ -59,7 +87,7 @@ jobs:
           - 6379:6379
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup PHP environment
         uses: shivammathur/setup-php@v2
         with:

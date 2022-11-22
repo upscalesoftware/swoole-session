@@ -30,7 +30,7 @@ $server->set([
     'enable_coroutine' => false,
 ]);
 $server->on('request', new SessionMiddleware(function ($request, $response) {
-    $_SESSION['data'] = $_SESSION['data'] ?? rand();
+    $_SESSION['data'] ??= rand();
     $response->end($_SESSION['data']);
 }));
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright © Upscale Software. All rights reserved.
  * See LICENSE.txt for license details.
@@ -9,17 +10,11 @@ use Upscale\Swoole\Session\SessionMiddleware;
 
 class SessionMiddlewareTest extends \Upscale\Swoole\Launchpad\Tests\TestCase
 {
-    /**
-     * @var \Swoole\Http\Server
-     */
-    protected $server;
+    protected \Swoole\Http\Server $server;
 
-    /**
-     * @var string[]
-     */
-    protected $cookieFilenames = [];
+    protected array $cookieFilenames = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -35,7 +30,7 @@ class SessionMiddlewareTest extends \Upscale\Swoole\Launchpad\Tests\TestCase
         $this->spawn($this->server);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         
@@ -56,27 +51,27 @@ class SessionMiddlewareTest extends \Upscale\Swoole\Launchpad\Tests\TestCase
         $sessionTwo = $this->createCookieJar('test');
 
         $result = $this->curl('http://127.0.0.1:8080/', $sessionOne + $this->buildPost(['data' => 'FIXTURE1']));
-        $this->assertContains('Set-Cookie: PHPSESSID=', $result);
+        $this->assertStringContainsString('Set-Cookie: PHPSESSID=', $result);
         $this->assertStringEndsWith('{"data":"FIXTURE1"}', $result);
 
         $result = $this->curl('http://127.0.0.1:8080/', $sessionTwo + $this->buildPost(['data' => 'FIXTURE2']));
-        $this->assertContains('Set-Cookie: PHPSESSID=', $result);
+        $this->assertStringContainsString('Set-Cookie: PHPSESSID=', $result);
         $this->assertStringEndsWith('{"data":"FIXTURE2"}', $result);
 
         $result = $this->curl('http://127.0.0.1:8080/', $sessionOne + $this->buildPost(['extra' => 'TEST1']));
-        $this->assertContains('Set-Cookie: PHPSESSID=', $result);
+        $this->assertStringContainsString('Set-Cookie: PHPSESSID=', $result);
         $this->assertStringEndsWith('{"data":"FIXTURE1","extra":"TEST1"}', $result);
 
         $result = $this->curl('http://127.0.0.1:8080/');
-        $this->assertContains('Set-Cookie: PHPSESSID=', $result);
+        $this->assertStringContainsString('Set-Cookie: PHPSESSID=', $result);
         $this->assertStringEndsWith('{}', $result);
 
         $result = $this->curl('http://127.0.0.1:8080/', $sessionOne);
-        $this->assertContains('Set-Cookie: PHPSESSID=', $result);
+        $this->assertStringContainsString('Set-Cookie: PHPSESSID=', $result);
         $this->assertStringEndsWith('{"data":"FIXTURE1","extra":"TEST1"}', $result);
 
         $result = $this->curl('http://127.0.0.1:8080/', $sessionTwo);
-        $this->assertContains('Set-Cookie: PHPSESSID=', $result);
+        $this->assertStringContainsString('Set-Cookie: PHPSESSID=', $result);
         $this->assertStringEndsWith('{"data":"FIXTURE2"}', $result);
     }
 
@@ -86,31 +81,31 @@ class SessionMiddlewareTest extends \Upscale\Swoole\Launchpad\Tests\TestCase
         $sidTwo = session_create_id('test');
         
         $result = $this->curl("http://127.0.0.1:8080/?PHPSESSID=$sidOne", $this->buildPost(['data' => 'FIXTURE1']));
-        $this->assertContains("Set-Cookie: PHPSESSID=$sidOne;", $result);
+        $this->assertStringContainsString("Set-Cookie: PHPSESSID=$sidOne;", $result);
         $this->assertStringEndsWith('{"data":"FIXTURE1"}', $result);
 
         $result = $this->curl("http://127.0.0.1:8080/?PHPSESSID=$sidTwo", $this->buildPost(['data' => 'FIXTURE2']));
-        $this->assertContains("Set-Cookie: PHPSESSID=$sidTwo;", $result);
+        $this->assertStringContainsString("Set-Cookie: PHPSESSID=$sidTwo;", $result);
         $this->assertStringEndsWith('{"data":"FIXTURE2"}', $result);
 
         $result = $this->curl("http://127.0.0.1:8080/?PHPSESSID=$sidOne", $this->buildPost(['extra' => 'TEST1']));
-        $this->assertContains("Set-Cookie: PHPSESSID=$sidOne;", $result);
+        $this->assertStringContainsString("Set-Cookie: PHPSESSID=$sidOne;", $result);
         $this->assertStringEndsWith('{"data":"FIXTURE1","extra":"TEST1"}', $result);
 
         $result = $this->curl('http://127.0.0.1:8080/');
-        $this->assertContains('Set-Cookie: PHPSESSID=', $result);
+        $this->assertStringContainsString('Set-Cookie: PHPSESSID=', $result);
         $this->assertStringEndsWith('{}', $result);
 
         $result = $this->curl("http://127.0.0.1:8080/?PHPSESSID=$sidOne");
-        $this->assertContains("Set-Cookie: PHPSESSID=$sidOne;", $result);
+        $this->assertStringContainsString("Set-Cookie: PHPSESSID=$sidOne;", $result);
         $this->assertStringEndsWith('{"data":"FIXTURE1","extra":"TEST1"}', $result);
         
         $result = $this->curl("http://127.0.0.1:8080/?PHPSESSID=$sidTwo");
-        $this->assertContains("Set-Cookie: PHPSESSID=$sidTwo;", $result);
+        $this->assertStringContainsString("Set-Cookie: PHPSESSID=$sidTwo;", $result);
         $this->assertStringEndsWith('{"data":"FIXTURE2"}', $result);
     }
 
-    protected function createCookieJar($prefix)
+    protected function createCookieJar(string $prefix): array
     {
         $filename = tempnam(sys_get_temp_dir(), $prefix);
         $this->cookieFilenames[] = $filename;
@@ -120,7 +115,7 @@ class SessionMiddlewareTest extends \Upscale\Swoole\Launchpad\Tests\TestCase
         ];
     }
 
-    protected function buildPost(array $data)
+    protected function buildPost(array $data): array
     {
         return [
             CURLOPT_POST => true,
