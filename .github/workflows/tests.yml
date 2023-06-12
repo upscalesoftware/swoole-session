@@ -27,7 +27,8 @@ jobs:
           - openswoole-4.9.1
           - openswoole-4.10.0
           - openswoole-4.11.1
-          - openswoole-4.12.0
+          - openswoole-4.12.1
+          - openswoole-22.0.0
         include:
           - os: ubuntu-latest
             php-version: '8.2'
@@ -40,7 +41,10 @@ jobs:
             swoole-version: swoole
           - os: ubuntu-latest
             php-version: '8.2'
-            swoole-version: openswoole-4.12.0
+            swoole-version: openswoole-4.12.1
+          - os: ubuntu-latest
+            php-version: '8.2'
+            swoole-version: openswoole-22.0.0
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
