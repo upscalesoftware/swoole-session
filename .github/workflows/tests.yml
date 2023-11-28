@@ -13,38 +13,29 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php-version: [ '8.0', '8.1' ]
+        php-version: [ '8.1', '8.2' ]
         swoole-version:
-          - swoole-4.4.26
-          - swoole-4.5.11
-          - swoole-4.6.7
-          - swoole-4.7.1
           - swoole-4.8.12
-          - swoole-5.0.1
+          - swoole-5.0.3
+          - swoole-5.1.1
           - swoole
-          - openswoole-4.7.2
-          - openswoole-4.8.1
-          - openswoole-4.9.1
-          - openswoole-4.10.0
-          - openswoole-4.11.1
           - openswoole-4.12.1
           - openswoole-22.0.0
+          - openswoole-22.1.0
+          - openswoole
         include:
           - os: ubuntu-latest
-            php-version: '8.2'
-            swoole-version: swoole-4.8.12
+            php-version: '8.3'
+            swoole-version: swoole-5.1.1
           - os: ubuntu-latest
-            php-version: '8.2'
-            swoole-version: swoole-5.0.1
-          - os: ubuntu-latest
-            php-version: '8.2'
+            php-version: '8.3'
             swoole-version: swoole
           - os: ubuntu-latest
-            php-version: '8.2'
-            swoole-version: openswoole-4.12.1
+            php-version: '8.3'
+            swoole-version: openswoole-22.1.0
           - os: ubuntu-latest
-            php-version: '8.2'
-            swoole-version: openswoole-22.0.0
+            php-version: '8.3'
+            swoole-version: openswoole
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -74,34 +65,29 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php-version: [ '8.0', '8.1' ]
+        php-version: [ '8.1', '8.2' ]
         swoole-version:
-          - swoole-4.4.26
-          - swoole-4.5.11
-          - swoole-4.6.7
-          - swoole-4.7.1
           - swoole-4.8.12
-          - swoole-5.0.1
+          - swoole-5.0.3
+          - swoole-5.1.1
           - swoole
-          - openswoole-4.7.2
-          - openswoole-4.8.1
-          - openswoole-4.9.1
-          - openswoole-4.10.0
-          - openswoole-4.11.1
-          - openswoole-4.12.0
+          - openswoole-4.12.1
+          - openswoole-22.0.0
+          - openswoole-22.1.0
+          - openswoole
         include:
           - os: ubuntu-latest
-            php-version: '8.2'
-            swoole-version: swoole-4.8.12
+            php-version: '8.3'
+            swoole-version: swoole-5.1.1
           - os: ubuntu-latest
-            php-version: '8.2'
-            swoole-version: swoole-5.0.1
-          - os: ubuntu-latest
-            php-version: '8.2'
+            php-version: '8.3'
             swoole-version: swoole
           - os: ubuntu-latest
-            php-version: '8.2'
-            swoole-version: openswoole-4.12.0
+            php-version: '8.3'
+            swoole-version: openswoole-22.1.0
+          - os: ubuntu-latest
+            php-version: '8.3'
+            swoole-version: openswoole
     services:
       redis:
         image: redis
