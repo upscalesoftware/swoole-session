@@ -61,6 +61,7 @@ jobs:
   test-redis:
     name: Test ${{ matrix.swoole-version }} with redis against php ${{ matrix.php-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    needs: test-files
     strategy:
       fail-fast: false
       matrix:
