@@ -50,7 +50,10 @@ jobs:
         env:
           fail-fast: true
       - name: Verify PHP environment
-        run: php --ri swoole || php --ri openswoole
+        run: |
+          php --ri swoole || php --ri openswoole
+          swoole_version="$(php -r "echo defined('SWOOLE_VERSION') ? SWOOLE_VERSION : OPENSWOOLE_VERSION;")"
+          [[ "openswoole-$swoole_version" == *"${{ matrix.swoole-version }}"* ]] || exit 1
       - name: Install dependencies
         run: composer install -n
       - name: Update permissions
@@ -108,7 +111,10 @@ jobs:
         env:
           fail-fast: true
       - name: Verify PHP environment
-        run: php --ri swoole || php --ri openswoole
+        run: |
+          php --ri swoole || php --ri openswoole
+          swoole_version="$(php -r "echo defined('SWOOLE_VERSION') ? SWOOLE_VERSION : OPENSWOOLE_VERSION;")"
+          [[ "openswoole-$swoole_version" == *"${{ matrix.swoole-version }}"* ]] || exit 1
       - name: Install dependencies
         run: composer install -n
       - name: Run test suite
